@@ -1,4 +1,4 @@
-import antfu from '@antfu/eslint-config'
+import antfu from '@antfu/eslint-config';
 
 export default antfu(
   {
@@ -19,7 +19,7 @@ export default antfu(
       'ts/no-require-imports': 'off',
       'ts/no-unused-vars': 'off',
       'unused-imports/no-unused-vars': 'off',
-      'style/semi': ["error", "always"]
+      'style/semi': ['error', 'always'],
     },
   },
-)
+);
