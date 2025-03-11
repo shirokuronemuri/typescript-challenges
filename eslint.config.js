@@ -18,6 +18,7 @@ export default antfu(
       'ts/no-namespace': 'off',
       'ts/no-require-imports': 'off',
       'ts/no-unused-vars': 'off',
+      'ts/no-empty-object-type': 'off',
       'unused-imports/no-unused-vars': 'off',
       'style/semi': ['error', 'always'],
     },
