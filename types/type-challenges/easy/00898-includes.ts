@@ -18,14 +18,35 @@
 
 /* _____________ Your Code Here _____________ */
 
-// todo: write isEqual<T, K>
+// doesn't work with some types and unions, so not the best solution
+type IsEqualDraft<A, B> = A extends B ? (B extends A ? true : false) : false;
 
-type Includes<T extends readonly any[], U> = {
+// the same issue, skips "false" and union types
+type IncludesDraft<T extends readonly any[], U> = {
   [P in T[number]]: true
 }[U] extends true ? true : false;
 
-type a = Includes<['Kars', 'Esidisi', 'Wamuu', 'Santana'], 'Kars'>;
-type b = boolean extends true ? true : false;
+// Quite interesting solution, had no idea you could do stuff like that
+type IsEqual<A, B> =
+  (<T>() => T extends A ? 1 : 2) extends
+  (<T>() => T extends B ? 1 : 2) ? true : false;
+
+// This solution is close but fails on undefined check because T[0] is evaluated as undefined in empty array
+type IncludesDraft2<T extends readonly any[], U> =
+  IsEqual<T[0], U> extends true
+    ? true
+    : T extends [T[0], ...infer Rest]
+      ? IncludesDraft2<Rest, U>
+      : false;
+
+// basically the same as above but in reverse order
+// infer First resolves the issue, returning never if the array is empty
+type Includes<T extends readonly any[], U> =
+  T extends [infer First, ...infer Rest]
+    ? Equal<First, U> extends true
+      ? true
+      : Includes<Rest, U>
+    : false;
 
 /* _____________ Test Cases _____________ */
 import type { Equal, Expect } from '@utils';
