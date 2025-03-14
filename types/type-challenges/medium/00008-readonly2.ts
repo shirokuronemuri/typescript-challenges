@@ -33,8 +33,19 @@
 */
 
 /* _____________ Your Code Here _____________ */
+type MyPick<T, K extends keyof T> = {
+  [P in K]: T[P]
+};
 
-type MyReadonly2<T, K> = any;
+type MyExclude<T, K> = T extends K ? never : T;
+
+type MyOmit<T, K extends keyof T> = MyPick<T, MyExclude<keyof T, K>>;
+
+type MyReadonly2<T, K extends keyof T = keyof T> = {
+  readonly [P in K]: T[P]
+} & {
+  [P in keyof MyOmit<T, K>]: T[P]
+};
 
 /* _____________ Test Cases _____________ */
 import type { Alike, Expect } from '@utils';
