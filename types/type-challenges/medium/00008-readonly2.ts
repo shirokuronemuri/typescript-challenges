@@ -41,24 +41,45 @@ type MyExclude<T, K> = T extends K ? never : T;
 
 type MyOmit<T, K extends keyof T> = MyPick<T, MyExclude<keyof T, K>>;
 
-type MyReadonly2<T, K extends keyof T = keyof T> = {
+// First solution, turns out it has redundant code after I checked out the solutions
+type MyReadonly2_1<T, K extends keyof T = keyof T> = {
   readonly [P in K]: T[P]
 } & {
   [P in keyof MyOmit<T, K>]: T[P]
 };
 
+type MyReadonly<T> = {
+  readonly [P in keyof T]: T[P]
+};
+
+// the solution isn't much different, to be honest, yet more elegant
+// It's separating MyReadonly as separate type and using MyPick to create an object with properties that should be made readonly
+// as for MyOmit, turns out that I was redundantly mapping values of its result and
+// I noticed that I could just remove the type mapping completely
+type MyReadonly2_2<T, K extends keyof T = keyof T> = Readonly<MyPick<T, K>> & MyOmit<T, K>;
+
 /* _____________ Test Cases _____________ */
 import type { Alike, Expect } from '@utils';
 
-type cases = [
-  Expect<Alike<MyReadonly2<Todo1>, Readonly<Todo1>>>,
-  Expect<Alike<MyReadonly2<Todo1, 'title' | 'description'>, Expected>>,
-  Expect<Alike<MyReadonly2<Todo2, 'title' | 'description'>, Expected>>,
-  Expect<Alike<MyReadonly2<Todo2, 'description'>, Expected>>,
+type cases1 = [
+  Expect<Alike<MyReadonly2_1<Todo1>, Readonly<Todo1>>>,
+  Expect<Alike<MyReadonly2_1<Todo1, 'title' | 'description'>, Expected>>,
+  Expect<Alike<MyReadonly2_1<Todo2, 'title' | 'description'>, Expected>>,
+  Expect<Alike<MyReadonly2_1<Todo2, 'description'>, Expected>>,
 ];
 
 // @ts-expect-error
-type error = MyReadonly2<Todo1, 'title' | 'invalid'>;
+type error1 = MyReadonly2_1<Todo1, 'title' | 'invalid'>;
+
+type cases2 = [
+  Expect<Alike<MyReadonly2_2<Todo1>, Readonly<Todo1>>>,
+  Expect<Alike<MyReadonly2_2<Todo1, 'title' | 'description'>, Expected>>,
+  Expect<Alike<MyReadonly2_2<Todo2, 'title' | 'description'>, Expected>>,
+  Expect<Alike<MyReadonly2_2<Todo2, 'description'>, Expected>>,
+];
+
+// @ts-expect-error
+type error2 = MyReadonly2_2<Todo1, 'title' | 'invalid'>;
 
 interface Todo1 {
   title: string
