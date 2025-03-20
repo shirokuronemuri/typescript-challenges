@@ -36,7 +36,7 @@
 
 /* _____________ Your Code Here _____________ */
 
-// my first wacky solution
+// my wacky solution
 // I'm not sure it covers all test cases, there need to be more checks
 type DeepReadonly1<T> = {
   readonly[K in keyof T]:

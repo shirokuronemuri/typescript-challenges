@@ -20,6 +20,7 @@ export default antfu(
       'ts/no-unused-vars': 'off',
       'ts/no-empty-object-type': 'off',
       'ts/no-unsafe-function-type': 'off',
+      'ts/method-signature-style': 'off',
       'unused-imports/no-unused-vars': 'off',
       'style/semi': ['error', 'always'],
     },
