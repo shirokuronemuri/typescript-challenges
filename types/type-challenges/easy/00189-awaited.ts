@@ -22,13 +22,6 @@
 
 /* _____________ Your Code Here _____________ */
 
-// type MyAwaited<T extends PromiseLike<any>> =
-//   T extends PromiseLike<infer K>
-//     ? K extends PromiseLike<any>
-//       ? MyAwaited<K>
-//       : K
-//     : never;
-
 type MyAwaited<T> =
   T extends PromiseLike<infer K>
     ? MyAwaited<K>
