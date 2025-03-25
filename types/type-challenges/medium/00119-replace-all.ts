@@ -19,10 +19,10 @@
 /* _____________ Your Code Here _____________ */
 
 type ReplaceAll<S extends string, From extends string, To extends string> =
-  From extends '' ? S :
-    S extends `${infer Beginning}${From}${infer Ending}`
-      ? ReplaceAll<`${Beginning}${To}${Ending}`, From, To>
-      : S;
+    From extends '' ? S :
+      S extends `${infer Beginning}${From}${infer Rest}`
+        ? `${Beginning}${To}${ReplaceAll<Rest, From, To>}`
+        : S;
 
 type a = ReplaceAll<'foobarfoobar', 'ob', 'b'>;
 /* _____________ Test Cases _____________ */
