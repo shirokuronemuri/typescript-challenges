@@ -1,5 +1,5 @@
-296 - Permutation;
 /*
+  296 - Permutation
   -------
   by Naoto Ikuno (@pandanoir) #medium #union
 
@@ -19,7 +19,7 @@
 // actually impossible to solve without prior knowledge on some interesting hacks.
 
 // first, [T] extends [never] helps to prevent stopping typescript from filtering out never
-// as it gets lost in type distribution by converting it into a tuple with actual never value
+// as this way it doesn't get lost in type distribution by converting it into a tuple with actual never value
 
 // second, T extends T makes T to distribute across all existing values and create separate execution branches for each one
 // and so instead of full T = 'A' | 'B' | 'C' we end up with T = 'A', 'B' and 'C' separately
